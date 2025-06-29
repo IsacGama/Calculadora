@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Display from './components/display/display.jsx';
 import Keyboard from './components/keyboard/keyboard.jsx';
 import HistoryPanel from './components/history/historypanel.jsx';
@@ -232,6 +232,40 @@ function App() {
       setMemory([]);
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const keyMap = {
+        'Enter': '=',
+        'Backspace': '⌫',
+        'Delete': 'C',
+        ',': ',',
+        '.': ',',
+        '/': '÷',
+        '*': 'x',
+        '-': '-',
+        '+': '+',
+        '%': '%',
+        '²': 'x²'
+      };
+
+      let key = e.key;
+
+      if (!isNaN(key)) {
+        handleClick(key);
+      } else if (keyMap[key]) {
+        handleClick(keyMap[key]);
+      } else if (key === 'm' || key === 'M') {
+        handleClick('M ⌵'); // tecla 'm' abre a memória
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
 
   return (
     <div className="calculadora">
