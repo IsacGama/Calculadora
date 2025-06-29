@@ -1,0 +1,85 @@
+.calculadora {
+    border: 1px solid #666666;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    height: 600px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    background: linear-gradient(to bottom right, #1e1e2e, #221f2f);
+    position: relative;
+    overflow: hidden;
+}
+
+.history-overlay, .memory-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 360px;
+  height: 320px;
+  background-color: #2a2a3a;
+  z-index: 10;
+  border-top: 1px solid #3d3d4d;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4);
+  
+  transform: translateY(150%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.history-overlay.show, .memory-overlay.show {
+  transform: translateY(0%);
+}
+
+.history-button {
+  position: fixed;  
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  align-self: flex-end;
+  margin-top: 15px;
+  z-index: 1000;
+  border-radius: 10px;
+  width: 15px;
+  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.history-button img {
+  width: 24px;
+  height: 24px;
+  filter: invert(100%);
+}
+
+/* Efeito geral de hover */
+.history-button:hover {
+    filter: brightness(1.2);
+    background-color: #2a2a3a;
+}
+
+/* Efeito ao clicar (pressionado) */
+.history-button:active {
+    transform: scale(0.97);
+    filter: brightness(0.9);
+    box-shadow: inset 0 0 5px #00000050;
+}
+
+img {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Opcional: para remover o destaque em mobile */
+img {
+    -webkit-tap-highlight-color: transparent;
+}
