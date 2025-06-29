@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback  } from 'react';
 import Display from './components/display/display.jsx';
 import Keyboard from './components/keyboard/keyboard.jsx';
 import HistoryPanel from './components/history/historypanel.jsx';
@@ -25,7 +25,7 @@ function App() {
     return Number.isInteger(num) ? num.toString() : num.toFixed(11).replace(/\.?0+$/, '');
   };
 
-  const handleClick = (key) => {
+  const handleClick = useCallback((key) => {
     if (!isNaN(key)) {
       if (currentInput === '0' || overwrite) {
         setCurrentInput(key);
@@ -189,7 +189,7 @@ function App() {
       default:
         break;
     }
-  };
+  }, [currentInput, overwrite, operator, previousValue, memory, showMemory])
 
   const calculate = (a, op, b) => {
     a = parseFloat(a);
@@ -252,11 +252,19 @@ function App() {
       let key = e.key;
 
       if (!isNaN(key)) {
-        handleClick(key);
-      } else if (keyMap[key]) {
+        if (currentInput === '0' || overwrite) {
+          setCurrentInput(key);
+          setOverwrite(false);
+        } else {
+          setCurrentInput(prev => prev + key);
+        }
+        return;
+      }
+
+      if (keyMap[key]) {
         handleClick(keyMap[key]);
-      } else if (key === 'm' || key === 'M') {
-        handleClick('M ⌵'); // tecla 'm' abre a memória
+      } else if (key.toLowerCase() === 'm') {
+        handleClick('M ⌵');
       }
     };
 
@@ -264,7 +272,7 @@ function App() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [currentInput, overwrite, handleClick]);
 
 
   return (
